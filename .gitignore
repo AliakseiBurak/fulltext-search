@@ -1,24 +1,5 @@
 ```
-# Dependencies
-vendor/
-composer.lock
-
-# Build artifacts
-api/bin/
-
-# Environment
-.env
-.env.local
-.env.*
-
-# Logs
-*.log
-
-# IDE
-.vscode/
-.idea/
-
-# OS
-.DS_Store
-Thumbs.db
+# Docker-related
+Dockerfile.php
+Dockerfile.webui
 ```

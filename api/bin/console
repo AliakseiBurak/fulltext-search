@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+<?php
+
+use App\Command\CreateIndexCommand;
+use App\Command\DeleteIndexCommand;
+use App\Command\SwitchIndexCommand;
+use App\Command\AddDocumentCommand;
+use App\Service\ManticoreService;
+use Symfony\Component\Console\Application;
+
+require_once __DIR__.'/../vendor/autoload.php';
+
+$manticoreService = new ManticoreService();
+
+$application = new Application();
+
+// Register commands
+$application->add(new CreateIndexCommand($manticoreService));
+$application->add(new DeleteIndexCommand($manticoreService));
+$application->add(new SwitchIndexCommand($manticoreService));
+$application->add(new AddDocumentCommand($manticoreService));
+
+$application->run();
