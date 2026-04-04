@@ -42,7 +42,10 @@ services:
     ports:
       - "8900:80"
     volumes:
-      - ./api:/app
+      - ./api/src:/app/src
+      - ./api/public:/app/public
+      - ./api/composer.json:/app/composer.json
+      - ./api/composer.lock:/app/composer.lock
     depends_on:
       - manticore
     networks:
@@ -57,7 +60,10 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./webui:/app
+      - ./webui/src:/app/src
+      - ./webui/public:/app/public
+      - ./webui/package.json:/app/package.json
+      - ./webui/package-lock.json:/app/package-lock.json
     networks:
       - search_network
     depends_on:
