@@ -7,7 +7,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ./volumes/postgres:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=mydatabase
       - POSTGRES_USER=user
@@ -24,7 +24,7 @@ services:
       - "9308:9308"  # HTTP interface
       - "9312:9312"  # Binary interface
     volumes:
-      - manticore_data:/var/lib/manticore
+      - ./volumes/manticore:/var/lib/manticore
       - ./manticore-config:/etc/manticoresearch
     environment:
       - EXTRA=1
@@ -63,10 +63,6 @@ services:
     depends_on:
       - php
     restart: unless-stopped
-
-volumes:
-  postgres_data:
-  manticore_data:
 
 networks:
   search_network:
