@@ -37,7 +37,7 @@ services:
   php:
     build:
       context: .
-      dockerfile: Dockerfile.php
+      dockerfile: Dockerfile_php
     container_name: ${PROJECT_NAME:-manticore-search-system}_php
     ports:
       - "8900:80"
@@ -52,7 +52,7 @@ services:
   webui:
     build:
       context: .
-      dockerfile: Dockerfile.webui
+      dockerfile: Dockerfile_webui
     container_name: ${PROJECT_NAME:-manticore-search-system}_webui
     ports:
       - "3000:3000"
