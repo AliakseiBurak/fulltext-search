@@ -1,3 +1,3 @@
-# Docker-related
-# Dockerfile.php
-# Dockerfile.webui
+webui/node_modules
+volumes/*
+!volumes/.gitignore

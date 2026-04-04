@@ -42,7 +42,7 @@ services:
     ports:
       - "8900:80"
     volumes:
-      - .:/app
+      - ./api:/app
     depends_on:
       - manticore
     networks:
