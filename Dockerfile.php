@@ -1,0 +1,24 @@
+FROM php:8.5-apache
+
+# Install required PHP extensions
+RUN docker-php-ext-install mysqli pdo pdo_mysql
+
+# Enable Apache rewrite module
+RUN a2enmod rewrite
+
+# Set working directory
+WORKDIR /var/www/html
+
+# Copy application files from api directory
+COPY ./api/ /var/www/html/
+
+# Install Composer dependencies
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN cd /var/www/html && composer install
+
+# Set proper permissions
+RUN chown -R www-data:www-data /var/www/html
+
+EXPOSE 80
+
+CMD ["apache2-foreground"]
