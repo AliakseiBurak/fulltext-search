@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    container_name: ${PROJECT_NAME:-manticore-search-system}_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./volumes/postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=mydatabase
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    networks:
+      - search_network
+    restart: unless-stopped
+
+  manticore:
+    image: manticoresearch/manticore:7.0.0
+    container_name: ${PROJECT_NAME:-manticore-search-system}_manticore
+    ports:
+      - "9306:9306"  # SQL interface
+      - "9308:9308"  # HTTP interface
+      - "9312:9312"  # Binary interface
+    volumes:
+      - ./volumes/manticore:/var/lib/manticore
+      - ./manticore:/etc/manticoresearch
+    environment:
+      - EXTRA=1
+    networks:
+      - search_network
+    restart: unless-stopped
+    depends_on:
+      - db
+
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile_php
+    container_name: ${PROJECT_NAME:-manticore-search-system}_php
+    ports:
+      - "8900:80"
+    volumes:
+      - ./api:/app
+    depends_on:
+      - manticore
+    networks:
+      - search_network
+    restart: unless-stopped
+
+  webui:
+    build:
+      context: .
+      dockerfile: Dockerfile_webui
+    container_name: ${PROJECT_NAME:-manticore-search-system}_webui
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./webui:/app
+      # При монтировании webui папка node_modules, созданная при сборке образа, перекрывается.
+      - /app/node_modules
+    networks:
+      - search_network
+    depends_on:
+      - php
+    restart: unless-stopped
+
+networks:
+  search_network:
+    driver: bridge

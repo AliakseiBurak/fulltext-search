@@ -1,0 +1,11 @@
+# Dependencies
+vendor/
+api/vendor/
+webui/node_modules/
+
+# Data and Indexes
+volumes/*
+!volumes/.gitignore
+
+# Logs
+*.log
